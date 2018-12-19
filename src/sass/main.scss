@@ -1,0 +1,45 @@
+body {
+  background-color:  #181818;
+}
+
+.order_panel {
+  
+  border-radius: 2px;
+  max-width: 400px;
+  
+  .rate {
+    background-color:#424242;
+    margin-top: 5px;
+    min-height: 50px;
+    color: #cccccc;
+  }
+
+  .order_list {
+    background-color:#181818;
+    margin-top:5px;
+    min-height: 400px;
+
+    div:nth-child(2n) {
+      background-color:#424242;
+    }
+  }
+
+  .control_order {
+    margin-top: 5px;
+    background-color:#181818;
+    border-color: #2a986f;
+    border-radius: 5px;
+    border-width: 4px;
+    max-height: 300px;
+    min-height: 50px;
+
+    button {
+      background-color: #2a986f;
+      border-width: 0px;
+      width:100px;
+      margin-left:5px;
+      height:30px;
+      border-radius: 5px;
+    }
+  }
+}

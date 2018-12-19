@@ -1,21 +1,23 @@
 import React, { Component } from 'react';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 import { connect } from "react-redux";
+import {setOrdersList} from "./actions/orderBook"
 import MainPageComponent from './pages/MainPageComponent'
-import './App.css';
+
+import './sass/main.scss';
 
 @connect(
   (store) => {
     return {
-      user: store.user,
-      main: store.main
+      orderBook: store.orderBook
     }
   },
   (dispatch) => {
     return {
       orderBookActions: {
         getOrders: (symbol) => {
-         // dispatch(fetchItem(uuid))
+          alert(symbol);
+          dispatch(setOrdersList(['Orders']))
         },
       }
     }
@@ -23,10 +25,16 @@ import './App.css';
 )
 class App extends Component {
   render() {
+    const MainPage = () => {
+      return (
+        <MainPageComponent actions = {this.props.orderBookActions}/>
+      )
+    }
+
     return (
     <Router>
       <Switch>
-        <Route path='/' component={MainPageComponent} />
+        <Route path='/' component={MainPage} />
       </Switch>
     </Router>
     );
