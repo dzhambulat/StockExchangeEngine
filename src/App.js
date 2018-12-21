@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { connect } from "react-redux";
-import {setOrdersList} from "./actions/orderBook"
+import { fetchOrders, makeSellOrder } from "./actions/orderBook"
 import MainPageComponent from './pages/MainPageComponent'
 
 import './sass/main.scss';
@@ -9,23 +9,28 @@ import './sass/main.scss';
 @connect(
   (store) => {
     return {
-      orderBook: store.orderBook
     }
   },
   (dispatch) => {
     return {
       orderBookActions: {
-        getOrders: (symbol) => {
-          alert(symbol);
-          dispatch(setOrdersList(['Orders']))
+        getOrders: (sympolPair) => {
+          dispatch(fetchOrders(sympolPair));
         },
+        setBuyOrder: (value) => {
+          
+        },
+        setSellOrder: (value) => {
+          dispatch(makeSellOrder(value));
+        }
       }
     }
   }
 )
 class App extends Component {
+  
   render() {
-    const MainPage = () => {
+    const MainPage = ({match}) => {
       return (
         <MainPageComponent actions = {this.props.orderBookActions}/>
       )
