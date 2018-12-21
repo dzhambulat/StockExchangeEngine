@@ -12,7 +12,6 @@ class MainPageComponent extends React.Component {
 
   
   componentWillUnmount() {
-    alert('MAin Unmoumt')
   }
 
   render() {
