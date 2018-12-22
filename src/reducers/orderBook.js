@@ -2,6 +2,7 @@ const initialState = {
   collection: []
 }
 const orderBook = (state = initialState, action) => {
+  let collection = [];
   switch (action.type) {
     case 'GET_ORDER_LIST':
       return {
@@ -29,16 +30,18 @@ const orderBook = (state = initialState, action) => {
         buyBegin: true
       }
     case 'SET_BUY_ORDER_FINISHED':
+      collection = [...state.collection, action.value];
       return {
         ...state,
         success: true,
-        buyBegin: false
+        sellBegin: false,
+        collection: collection
       }
     case 'SET_BUY_ORDER_FAIL':
       return {
         ...state,
         success: false,
-        buyBegin: false
+        sellBegin: false
       }
     case 'SET_SELL_ORDER':
       return {
@@ -48,7 +51,7 @@ const orderBook = (state = initialState, action) => {
         sellBegin: true
       }
     case 'SET_SELL_ORDER_FINISHED':
-      let collection = [...state.collection, action.value];
+      collection = [...state.collection, action.value];
       return {
         ...state,
         success: true,

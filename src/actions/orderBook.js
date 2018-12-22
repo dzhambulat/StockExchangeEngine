@@ -16,6 +16,8 @@ function failOrderList() {
     type: 'GET_ORDER_LIST_FAIL'
   }
 }
+
+
 function sellOrder(value) {
   return {
     type: 'SET_SELL_ORDER',
@@ -23,6 +25,7 @@ function sellOrder(value) {
   }
 }
 
+// when order is success 
 function finishOrder(value) {
   return {
     type: 'SET_SELL_ORDER_FINISHED',
@@ -30,14 +33,33 @@ function finishOrder(value) {
   }
 }
 
+// when order fails
 function failSellOrder() {
   return {
     type: 'SET_SELL_ORDER_FAIL'
   }
 }
 
-export function buyOrder() {
-  
+function buyOrder(value) {
+  return {
+    type: 'SET_BUY_ORDER',
+    value: value
+  }
+}
+
+// when order is success 
+function finishBuyOrder(value) {
+  return {
+    type: 'SET_BUY_ORDER_FINISHED',
+    value: value
+  }
+}
+
+// when order fails
+function failBuyOrder() {
+  return {
+    type: 'SET_BUY_ORDER_FAIL'
+  }
 }
 
 export function fetchOrders(symbolPair) {
@@ -53,5 +75,13 @@ export function makeSellOrder(value) {
     dispatch(sellOrder(value));
 
     dispatch(finishOrder(value));
+  }
+}
+
+export function makeBuyOrder(value) {
+  return function(dispatch) {
+    dispatch(buyOrder(value));
+
+    dispatch(finishBuyOrder(value));
   }
 }

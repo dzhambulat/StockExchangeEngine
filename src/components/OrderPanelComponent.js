@@ -33,14 +33,14 @@ class OrderPanelComponent extends React.Component {
     return (
       <div class="order_panel">
         <div class="rate">
-            434334433443
+             
           </div>
         <div class="order_list">
          {orderList}
         </div>
         <div class="control_order">
           <button onClick={()=>{this.actions.setSellOrder('new order')}}>Sell</button>
-          <button>Buy</button>
+          <button onClick={()=>{this.actions.setBuyOrder('buy order')}}>Buy</button>
         </div>
         </div>
     );

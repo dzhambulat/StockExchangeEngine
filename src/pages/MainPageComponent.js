@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import OrderPanelComponent from '../components/OrderPanelComponent'
+import HistoryPanelComponent from "../components/HistoryRatesComponent";
 
 class MainPageComponent extends React.Component {
 
@@ -16,7 +17,10 @@ class MainPageComponent extends React.Component {
 
   render() {
     return (
-      <OrderPanelComponent actions = {this.props.actions}/>
+      <div>
+        <OrderPanelComponent actions = {this.props.actions}/>
+        <HistoryPanelComponent/>
+        </div>
     );
   }
 }
