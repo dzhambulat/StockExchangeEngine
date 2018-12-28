@@ -34,14 +34,15 @@ const orderBook = (state = initialState, action) => {
       return {
         ...state,
         success: true,
-        sellBegin: false,
+        buyBegin: false,
         collection: collection
       }
     case 'SET_BUY_ORDER_FAIL':
       return {
         ...state,
         success: false,
-        sellBegin: false
+        buyBegin: false,
+        error: action.error
       }
     case 'SET_SELL_ORDER':
       return {
@@ -62,7 +63,8 @@ const orderBook = (state = initialState, action) => {
       return {
         ...state,
         success: false,
-        sellBegin: false
+        sellBegin: false,
+        error: action.error
       }
     default:
       return state

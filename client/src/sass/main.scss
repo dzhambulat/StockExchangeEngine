@@ -36,13 +36,29 @@ body {
     max-height: 300px;
     min-height: 50px;
 
-    button {
-      background-color: #2a986f;
-      border-width: 0px;
-      width:150px;
-      margin-left:5px;
-      height:30px;
-      border-radius: 5px;
+    .order_input {
+      float:left;
+      width:50%;
+
+      button {
+        background-color: #2a986f;
+        border-width: 0px;
+        width:170px;
+        margin-left:5px;
+        height:30px;
+        border-radius: 5px;
+      }
+
+      input {
+        margin-top:5px;
+        margin-left:5px;
+        width:170px;
+        border-radius: 5px;
+        background-color: #424242;
+        border-width: 0px;
+        height:25px;
+        color: white;
+      }
     }
   }
 }

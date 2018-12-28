@@ -28,7 +28,7 @@ function sellOrder(value) {
 }
 
 // when order is success 
-function finishOrder(value) {
+function finishSellOrder(value) {
   return {
     type: 'SET_SELL_ORDER_FINISHED',
     value: value
@@ -36,9 +36,10 @@ function finishOrder(value) {
 }
 
 // when order fails
-function failSellOrder() {
+function failSellOrder(error) {
   return {
-    type: 'SET_SELL_ORDER_FAIL'
+    type: 'SET_SELL_ORDER_FAIL',
+    error: error
   }
 }
 
@@ -50,17 +51,17 @@ function buyOrder(value) {
 }
 
 // when order is success 
-function finishBuyOrder(value) {
+function finishBuyOrder() {
   return {
-    type: 'SET_BUY_ORDER_FINISHED',
-    value: value
+    type: 'SET_BUY_ORDER_FINISHED'
   }
 }
 
 // when order fails
-function failBuyOrder() {
+function failBuyOrder(error) {
   return {
-    type: 'SET_BUY_ORDER_FAIL'
+    type: 'SET_BUY_ORDER_FAIL',
+    error: error
   }
 }
 
@@ -73,18 +74,24 @@ export function fetchOrders(symbolPair) {
   }
 }
 
-export function makeSellOrder(value) {
+export function makeSellOrder(order) {
   return function(dispatch) {
-    dispatch(sellOrder(value));
-
-    dispatch(finishOrder(value));
+    dispatch(sellOrder(order));
+    orderService.sendSellOrder(order, (data) => {
+      dispatch(finishSellOrder(data));
+    }, (e) => {
+      dispatch(failSellOrder(e));
+    })
   }
 }
 
-export function makeBuyOrder(value) {
+export function makeBuyOrder(order) {
   return function(dispatch) {
-    dispatch(buyOrder(value));
-
-    dispatch(finishBuyOrder(value));
+    dispatch(buyOrder(order));
+    orderService.sendSellOrder(order, (data) => {
+      dispatch(finishBuyOrder(data));
+    }, (e) => {
+      dispatch(failBuyOrder(e));
+    })
   }
 }

@@ -13,6 +13,28 @@ class OrderService {
       callback(data);
     })
   }
+
+  sendSellOrder(order, callback, fail) {
+    try {
+      this.socket.emit('SELL_ORDER', order, (data) => {
+        callback(data);
+      })
+    }
+    catch (e) {
+      fail(e);
+    }
+  }
+
+  sendBuyOrder(pair, order, callback, fail) {
+    try {
+      this.socket.emit('BUY_ORDER', order, (data) => {
+        callback(data);
+      })
+    }
+    catch (e) {
+      fail(e);
+    }
+  }
 }
 
 export default new OrderService();
