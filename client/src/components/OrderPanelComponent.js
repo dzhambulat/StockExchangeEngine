@@ -41,8 +41,8 @@ class OrderPanelComponent extends React.Component {
   sell() {
     const order = {
       pair: this.ratePair,
-      sellAmount: this.state.sellAmount,
-      sellPrice: this.state.sellPrice
+      amount: this.state.sellAmount,
+      price: this.state.sellPrice
     }
     this.actions.setSellOrder(order);
   }
@@ -50,8 +50,8 @@ class OrderPanelComponent extends React.Component {
   buy() {
     const order = {
       pair: this.ratePair,
-      buyAmount: this.state.buyAmount,
-      buyPrice: this.state.buyPrice
+      amount: this.state.buyAmount,
+      price: this.state.buyPrice
     }
     this.actions.setBuyOrder(order);
   }

@@ -12,10 +12,10 @@ export class OrderBook extends EventEmmiter
     constructor() {
         super();
         console.log("Orders");
-        this.firstSymCup = PriorityQueue({comparator: (a, b)=>
+        this.sell_orders = PriorityQueue({comparator: (a, b)=>
             b.price - a.price 
         });
-        this.secondSymCup = PriorityQueue({comparator: (a, b)=>
+        this.buy_orders = PriorityQueue({comparator: (a, b)=>
             a.price - b.price 
         });
     }
@@ -26,42 +26,41 @@ export class OrderBook extends EventEmmiter
 
     makeExchangeResult(count,price)
     {
-        return {
-            count:count,
-            price:price
-        }
+        return { count, price }
     }
 
     makeExchange()
     {
         let buyOrder = this.buy_orders.top();
         let sellOrder = this.sell_orders.top();
-
         const exchangeResult = [];
-        console.log(buyOrder.price);
+        exchangeResult.status = false;
+
+        if(!buyOrder || !sellOrder) {
+          return exchangeResult;
+        }
+        
         while (buyOrder && sellOrder && buyOrder.price >= sellOrder.price)
         {
-            if (buyOrder.count <= sellOrder.count)
-            {
-                exchangeResult.push(this.makeExchangeResult(buyOrder.count, sellOrder.price))
-                this.buy_orders.pop();
-                sellOrder.count -=buyOrder.count;
-                if (sellOrder.count === 0)
-                {
-                    this.sell_orders.pop();
-                }
+          exchangeResult.status = true;
+          if (buyOrder.count <= sellOrder.count) {
+            exchangeResult.push(this.makeExchangeResult(buyOrder.count, sellOrder.price))
+            this.buy_orders.pop();
+            sellOrder.count -=buyOrder.count;
+            if (sellOrder.count === 0) {
+              this.sell_orders.pop();
             }
-            else 
-            {
-                exchangeResult.push(this.makeExchangeResult(sellOrder.count, sellOrder.price));
-                buyOrder.count -= sellOrder.count;
-                this.sell_orders.pop();
-            }
-            buyOrder = this.buy_orders.top();
-            sellOrder = this.sell_orders.top();
-        }
+          }
+          else {
+              exchangeResult.push(this.makeExchangeResult(sellOrder.count, sellOrder.price));
+              buyOrder.count -= sellOrder.count;
+              this.sell_orders.pop();
+          }
+          buyOrder = this.buy_orders.top();
+          sellOrder = this.sell_orders.top();
+      }
 
-        return exchangeResult;
+      return exchangeResult;
     }
 
     putSellOrder(order){
@@ -69,10 +68,14 @@ export class OrderBook extends EventEmmiter
         {
             throw new OrderError();
         }
+
         this.sell_orders.push(order);
-        process.nextTick(function (data) {
+        const orderResult = this.makeExchange();
+        if (orderResult.status === true) {
+          process.nextTick(function (data) {
             this.emit('processed',data);
-        }.bind(this) , this.makeExchange());
+          }.bind(this), orderResult);
+        }
     }
 
     putBuyOrder(order) {
@@ -80,10 +83,13 @@ export class OrderBook extends EventEmmiter
         {
             throw new OrderError();
         }
-        this.buy_orders.push(order);
-        process.nextTick(function (data) {
-            this.emit('processed',data);
-        }.bind(this) , this.makeExchange());
 
+        this.buy_orders.push(order);
+        const orderResult = this.makeExchange();
+        if (orderResult.status === true) {
+          process.nextTick(function (data) {
+            this.emit('processed',data);
+          }.bind(this), orderResult);
+        }
     }
 }

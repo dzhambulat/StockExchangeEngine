@@ -1,11 +1,19 @@
 import io from 'socket.io-client';
+import EventEmmiter from 'events';
 
-class OrderService {
+class OrderService extends EventEmmiter {
   init() {
     this.socket = io.connect('localhost:5000', {reconnect: true});
-        this.socket.on('connect', function (socket) {
-            console.log('Connected!');
+    this.socket.on('connect', (socket) => {
+        console.log('Connected!');
+        this.socket.emit('AUTH_USER', {}, (data) => {
+          this.token = data.tokenId;
+        });
+
+        this.socket.on('ORDER_FINISHED', (data) => {
+          alert(data);
         })
+      })
   }
 
   getOrderList(pair, callback) {
@@ -25,7 +33,7 @@ class OrderService {
     }
   }
 
-  sendBuyOrder(pair, order, callback, fail) {
+  sendBuyOrder(order, callback, fail) {
     try {
       this.socket.emit('BUY_ORDER', order, (data) => {
         callback(data);
