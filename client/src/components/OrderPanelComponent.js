@@ -33,12 +33,21 @@ class OrderPanelComponent extends React.Component {
   }
 
   textChange(e) {
-    this.setState({
-      [e.target.id]:e.target.value
-    })
+    if(!isNaN(e.target.value)) {
+      this.setState({
+        [e.target.id]:e.target.value
+      })
+    } 
+    else {
+      this.setState((prevState) => {return prevState});
+    }
   }
 
   sell() {
+    if(isNaN(parseInt(this.state.sellAmount)) || isNaN(parseInt(this.state.sellPrice))) {
+      return;
+    }
+
     const order = {
       pair: this.ratePair,
       amount: this.state.sellAmount,
@@ -48,6 +57,10 @@ class OrderPanelComponent extends React.Component {
   }
 
   buy() {
+    if(isNaN(parseInt(this.state.buyAmount)) || isNaN(parseInt(this.state.buyPrice))) {
+      return;
+    }
+
     const order = {
       pair: this.ratePair,
       amount: this.state.buyAmount,
@@ -72,13 +85,13 @@ class OrderPanelComponent extends React.Component {
         <div className="control_order">
           <div className="order_input">
             <button onClick={this.sell.bind(this)}>Sell</button>
-            <input type='text' id='sell_amount' placeholder='Amount' onChange={this.textChange.bind(this)}/>
-            <input type='text' id='sell_price' placeholder='Price' onChange={this.textChange.bind(this)}/>
+            <input type='text' id='sell_amount' placeholder='Amount' onChange={this.textChange.bind(this)} value={this.state.sell_amount}/>
+            <input type='text' id='sell_price' placeholder='Price' onChange={this.textChange.bind(this)} value={this.state.sell_price}/>
           </div>
           <div className="order_input"> 
             <button onClick={this.buy.bind(this)}>Buy</button>
-            <input type='text' id='buy_amount' onChange={this.textChange.bind(this)}/>
-            <input type='text' id='buy_price' onChange={this.textChange.bind(this)}/>
+            <input type='text' id='buy_amount' onChange={this.textChange.bind(this)} value={this.state.buy_amount}/>
+            <input type='text' id='buy_price' onChange={this.textChange.bind(this)} value={this.state.buy_price}/>
           </div>
         </div>
         </div>
