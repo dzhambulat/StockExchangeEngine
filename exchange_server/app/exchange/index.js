@@ -13,7 +13,7 @@ class Exchange {
     this.tokenId = 1;
     this.orderId = 1;
 
-    this.orderMap.set('eth-eos',['tes','dsdds']);
+    this.orderMap.set('eth-eos',this.orderBook);
   }
 
   start() {
@@ -21,11 +21,12 @@ class Exchange {
     console.log('Listen port 5000');
 
     this.orderBook.on('processed', (orderStatus) => {
+      console.log('processed');
       console.log(orderStatus);
-      const { firstOrderId, secondOrderId } = this.this.orderStatus;
+      const { firstOrderId, secondOrderId } = orderStatus;
       const tokenFirst = this.orderToToken.get(firstOrderId);
       const tokenSecond = this.orderToToken.get(secondOrderId);
-
+      console.log(tokenFirst);
       const socketFirst = this.socketMap.get(tokenFirst);
       const socketSecond = this.socketMap.get(tokenSecond);
 
@@ -43,21 +44,26 @@ class Exchange {
 
       socket.on('GET_LIST', (msg, callback) => {
         console.log(msg);
-        const orders = this.orderMap.get(msg.pair);
+        const orderBook = this.orderMap.get(msg.pair);
+        const orders = orderBook.getOrders();
         console.log(callback);
         callback(orders);
       });
 
       socket.on('SELL_ORDER', (msg, callback) => {
         const token = msg.token;
+        console.log('token', token)
         msg.orderId = this.orderId++;
-        this.orderToToken.set(this.orderId, token);
+        this.orderToToken.set(msg.orderId, token);
         console.log(msg);
         this.putSellOrder(msg);
       });
 
       socket.on('BUY_ORDER', (msg, callback) => {
+        const token = msg.token;
         msg.orderId = this.orderId++;
+        this.orderToToken.set(msg.orderId, token);
+        console.log('BUY_ORDER');
         this.putBuyOrder(msg);
       });
       
@@ -67,16 +73,18 @@ class Exchange {
     });
   }
 
-  putBuyOrder({firstSymbol, secondSymbol, amount, price}) {
+  putBuyOrder({amount, price, orderId}) {
     this.orderBook.putBuyOrder({
       price,
+      orderId,
       count: amount
     })
   }
 
-  putSellOrder({firstSymbol, secondSymbol, amount, price}) {
+  putSellOrder({amount, price, orderId}) {
     this.orderBook.putSellOrder({
       price,
+      orderId,
       count: amount
     })
   }
