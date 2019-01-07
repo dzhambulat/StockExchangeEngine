@@ -88,7 +88,7 @@ export function makeSellOrder(order) {
 export function makeBuyOrder(order) {
   return function(dispatch) {
     dispatch(buyOrder(order));
-    orderService.sendSellOrder(order, (data) => {
+    orderService.sendBuyOrder(order, (data) => {
       dispatch(finishBuyOrder(data));
     }, (e) => {
       dispatch(failBuyOrder(e));

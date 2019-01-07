@@ -7,11 +7,10 @@ class OrderService extends EventEmmiter {
     this.socket.on('connect', (socket) => {
         console.log('Connected!');
         this.socket.emit('AUTH_USER', {}, (data) => {
-          this.token = data.tokenId;
+          this.token = data;
         });
 
         this.socket.on('ORDER_FINISHED', (data) => {
-          alert(data);
         })
       })
   }
@@ -24,6 +23,7 @@ class OrderService extends EventEmmiter {
 
   sendSellOrder(order, callback, fail) {
     try {
+      order.token = this.token;
       this.socket.emit('SELL_ORDER', order, (data) => {
         callback(data);
       })
@@ -35,6 +35,7 @@ class OrderService extends EventEmmiter {
 
   sendBuyOrder(order, callback, fail) {
     try {
+      order.token = this.token;
       this.socket.emit('BUY_ORDER', order, (data) => {
         callback(data);
       })
