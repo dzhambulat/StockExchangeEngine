@@ -1,6 +1,4 @@
-import io from 'socket.io'
 import {OrderBook} from '../orderbook';
-import { throws } from 'assert';
 
 class Exchange {
 
@@ -17,22 +15,18 @@ class Exchange {
   }
 
   start() {
-    let server = io.listen(5000);
-    console.log('Listen port 5000');
-
     this.orderBook.on('processed', (orderStatus) => {
       console.log('processed');
       console.log(orderStatus);
-      const { firstOrderId, secondOrderId } = orderStatus;
-      const tokenFirst = this.orderToToken.get(firstOrderId);
-      const tokenSecond = this.orderToToken.get(secondOrderId);
-      console.log(tokenFirst);
-      const socketFirst = this.socketMap.get(tokenFirst);
-      const socketSecond = this.socketMap.get(tokenSecond);
-
-      socketFirst.emit('ORDER_FINISHED', orderStatus);
-      socketSecond.emit('ORDER_FINISHED', orderStatus);
-
+      orderStatus.forEach((status) => {
+        const tokenFirst = this.orderToToken.get(status.buyOrder);
+        const tokenSecond = this.orderToToken.get(status.sellOrder);
+        const socketFirst = this.socketMap.get(tokenFirst);
+        const socketSecond = this.socketMap.get(tokenSecond);
+        
+        socketFirst.emit('ORDER_FINISHED', {count: status.count, price: status.price});
+        socketSecond.emit('ORDER_FINISHED', {count: status.count, price: status.price});
+      })
     })
 
     server.sockets.on('connection', (socket) => {

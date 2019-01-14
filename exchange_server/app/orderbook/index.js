@@ -59,9 +59,11 @@ export class OrderBook extends EventEmmiter
       return true;
   }
 
-  makeExchangeResult(count,price) {
+  makeExchangeResult(buyOrder, sellOrder, count,price) {
       return { 
-        count, 
+        buyOrder,
+        sellOrder,
+        count,
         price
       }
   }
@@ -92,9 +94,6 @@ export class OrderBook extends EventEmmiter
             buyOrder.count -= sellOrder.count;
             this.sell_orders.pop();
         }
-        console.log(sellOrder);
-        exchangeResult.firstOrderId = sellOrder.orderId;
-        exchangeResult.secondOrderId = buyOrder.orderId;
 
         buyOrder = this.buy_orders.top();
         sellOrder = this.sell_orders.top();
