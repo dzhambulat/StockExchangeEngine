@@ -32,7 +32,8 @@ class Server extends EventEmmiter {
 
       socket.on('SELL_ORDER', (msg, callback) => {
         const token = msg.token;
-        console.log('token', token)
+        console.log('token', token);
+        this.emit('sell_order', msg);
         msg.orderId = this.orderId++;
         this.orderToToken.set(msg.orderId, token);
         console.log(msg);
