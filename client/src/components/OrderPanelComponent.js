@@ -71,7 +71,11 @@ class OrderPanelComponent extends React.Component {
 
   render() {
     let orderList = this.props.orderBook.collection.map((order, i) => {
+<<<<<<< HEAD
       return <div key={'order'+i}> <p>{order.amount}</p> </div>
+=======
+      return <div key={'order'+i}> {order} </div>
+>>>>>>> parent of 156dc4e4... add test history component data
     })
 
     return (
@@ -85,13 +89,13 @@ class OrderPanelComponent extends React.Component {
         <div className="control_order">
           <div className="order_input">
             <button onClick={this.sell.bind(this)}>Sell</button>
-            <input type='text' id='sellAmount' placeholder='Amount' onChange={this.textChange.bind(this)} value={this.state.sellAmount}/>
-            <input type='text' id='sellPrice' placeholder='Price' onChange={this.textChange.bind(this)} value={this.state.sellPrice}/>
+            <input type='text' id='sell_amount' placeholder='Amount' onChange={this.textChange.bind(this)} value={this.state.sell_amount}/>
+            <input type='text' id='sell_price' placeholder='Price' onChange={this.textChange.bind(this)} value={this.state.sell_price}/>
           </div>
           <div className="order_input"> 
             <button onClick={this.buy.bind(this)}>Buy</button>
-            <input type='text' id='buyAmount' onChange={this.textChange.bind(this)} value={this.state.buyAmount}/>
-            <input type='text' id='buyPrice' onChange={this.textChange.bind(this)} value={this.state.buyPrice}/>
+            <input type='text' id='buy_amount' onChange={this.textChange.bind(this)} value={this.state.buy_amount}/>
+            <input type='text' id='buy_price' onChange={this.textChange.bind(this)} value={this.state.buy_price}/>
           </div>
         </div>
         </div>

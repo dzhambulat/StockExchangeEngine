@@ -19,7 +19,6 @@ class MainPageComponent extends React.Component {
     return (
       <div>
         <OrderPanelComponent actions = {this.props.actions}/>
-        <HistoryPanelComponent/>
         </div>
     );
   }
