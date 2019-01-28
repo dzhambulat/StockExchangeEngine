@@ -71,7 +71,7 @@ class OrderPanelComponent extends React.Component {
 
   render() {
     let orderList = this.props.orderBook.collection.map((order, i) => {
-      return <div key={'order'+i}> {order.amount} </div>
+      return <div key={'order'+i}> <p>{order.amount}</p> </div>
     })
 
     return (
